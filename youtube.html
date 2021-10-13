@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" href="https://qonaskamkuk.com/wp-content/uploads/2019/08/youtube-logo-1024x1024.png">
+    <title>YouTube</title>
+    <style>
+        *{
+            margin: 0%;
+            padding: 0%;
+            box-sizing: border-box;
+        }
+        #videos{
+            display: grid;
+            grid-template-columns: 24% 24% 24% 24%;
+            grid-gap: 1%;
+            padding: 100px 10px 10px 10px;
+        }
+        input{
+            height: 70px;
+        }
+        #videos >div{
+            width: 100%;
+        }
+        #navbar{
+            display: grid;
+            grid-template-columns: 20% 50% 11% 5% 10%;
+            background-color: white;
+            position: fixed;
+            font-size: xx-large;
+            padding: 5px;
+        }
+        .fa-bars{
+            font-size: 40px;
+            margin: none;
+            position: absolute;
+            top: 22px;
+        }
+        #query{
+            padding: 13px;
+            width: 89%;
+            font-size: 20px;
+            border: none;
+            padding-top: 20px;
+        }#btn{
+            width: 10%;
+            padding: 25px;
+            border: none;
+            cursor: pointer;
+            font-weight: bolder;
+            font-size: 20px;
+        }
+        .fa-microphone{
+            margin-top: 18px;
+            margin-left: 20px;
+        }
+        .fa-ellipsis-v{
+            font-size: 40px;
+        }
+        #imagtg{
+            margin-top: 15px;
+            margin-left: 25px;
+        }#searchbar{
+            border: 1px solid #B0BEC5;
+        }
+        .fa-th{
+            font-size: 40px;
+            margin-top: 18px;
+        }
+        #sign{
+            display: flex;
+            border: 2px solid #42A5F5;
+            padding-top: 18px;
+            padding-left: 5px;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar">
+        <div><i class="fa fa-bars" aria-hidden="true"></i>&nbsp;
+           <!--- <i class="fa fa-youtube-play" aria-hidden="true"></i>-->
+        <img src="https://sguru.org/wp-content/uploads/2018/02/2000px-YouTube_Logo_2017.svg_.png" id="imagtg" width="55%" alt=""></div>
+        <div id="searchbar">
+            
+        <input type="text" id = "query" placeholder="Search for a video"/>
+        <button onclick ="searchVideos()" id="btn"><i class="fa fa-search" aria-hidden="true"></i></button>
+        
+        </div>
+        <div>
+            <i class="fa fa-microphone" aria-hidden="true"></i>
+            
+        </div>
+        <div id="last">
+            <i class="fa fa-th" aria-hidden="true"></i> &ensp;
+            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+        </div>
+        <div id="sign">
+            <i class="fa fa-user-circle" aria-hidden="true"></i>&nbsp;&nbsp;
+            <p>Sign in</p>
+        </div>
+    </div>
+
+    <div id="videos">
+        
+    </div>
+</body>
+</html>
+<script>
+    async function searchVideos()
+    {
+
+    var query = document.getElementById('query').value;
+        let res = await fetch
+        (`https://youtube.googleapis.com/youtube/v3/search?q=${query}&type=video&key=AIzaSyDU699faiwdFwLpcWGeWVS3aMgvvdRf1w0&maxResults=20`);
+        //console.log(res.json())
+
+        var data = await res.json();
+        console.log("data",data)
+       appendVideos(data.items)
+    }
+    //searchVideos();
+
+    var parent = document.getElementById('videos');
+
+    function appendVideos(video_data){
+        parent.innerHTML=null;
+        video_data.forEach(({id:{videoId}})=>{
+        //console.log("video",videoId)
+        let div = document.createElement('div');
+
+        div.innerHTML = `<iframe width="100%" height="315px" src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    
+         parent.append(div);
+    })
+
+    }
+</script>
